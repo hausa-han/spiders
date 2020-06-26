@@ -23,20 +23,20 @@ __________________________________________________________________
 
 需要导入以下模块或函数：
 
-import requests
-import base64
-import codecs
-import json
-import os
-import random
-from time import sleep
-from Crypto.Cipher import AES
+requests
+base64
+codecs
+json
+os
+random
+time.sleep
+Crypto.Cipher.AES
 
 若运行时提示没有某些模块；
 请先使用：
 pip uninstall pycrypto Crypto
 pip install requests pycryptodome
-or
+或：
 pip3 uninstall pycrypto Crypto
 pip3 install requests pycryptodome
 来安装这些模块。
@@ -46,7 +46,7 @@ __________________________________________________________________
 ***使用方法***
 
 python get_wyy<TAB><CR>
-or
+或
 python3 get_wyy<TAB><CR>
 
 __________________________________________________________________
