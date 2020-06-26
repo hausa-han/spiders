@@ -1,5 +1,5 @@
 # wangyiyun_spider
-A spider coded to get the hot_Comment of WangYiYun
+A spider coded to get the hot_Comment of WangYiYun music
 __________________________________________________________________
 ***感谢Star！***
 
@@ -33,20 +33,20 @@ from Crypto.Cipher import AES
 
 若运行时提示没有某些模块；
 请先使用：
-(Windows)pip install requests pycryptodome
-（Linux）pip install requests Crypto
+pip uninstall pycrypto Crypto
+pip install requests pycryptodome
+or
+pip3 uninstall pycrypto Crypto
+pip3 install requests pycryptodome
 来安装这些模块。
-（根据系统选择使用的命令）
-
-如果您使用的是Windows系统，请下载xxxxxx_Windows.py使用；
-如果您使用的是Linux系统，请下载xxxxxx_Linux.py使用。
 
 
 __________________________________________________________________
 ***使用方法***
 
-python/python3 get_wyy_<TAB><CR>
-
+python get_wyy<TAB><CR>
+or
+python3 get_wyy<TAB><CR>
 
 __________________________________________________________________
 ***反馈***
