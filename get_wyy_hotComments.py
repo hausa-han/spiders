@@ -37,7 +37,7 @@ class Spider():
     def getcomments(self, songID):
         print("Reading Comments......\n")
         url = self.baseurl + 'weapi/v1/resource/comments/R_SO_4_' + songID + '?csrf_token='
-        data = Data_of_Comments()
+        data = Data_of_Comments(songID)
         text = data.make_random_string()
         params = data.get_params(text)
         encSecKey = data.get_encSecKey(text)
@@ -74,9 +74,10 @@ class Spider():
 
 #Imitate the enctyption process of JS script, to get the POST data
 class Data_of_Comments():
-    def __init__(self):
+    def __init__(self, songID):
         self.params = ''
         self.encSecKey = ''
+        self.songID = songID
         self.second_param = '010001'
         self.third_param = '00e0b509f6259df8642dbc35662901477df22677ec152b5ff68ace615bb7b725152b3ab17a876aea8a5aa76d2e417629ec4ee341f56135fccf695280104e0312ecbda92557c93870114af6c9d05c4f7f0c3685b7a46bee255932575cce10b424d813cfe4875d3e82047b97ddef52741d546b8e289dc6935b3ece0462db0a22b8e7'
         self.fourth_param = '0CoJUm6Qyw8W8jud'
@@ -97,7 +98,7 @@ class Data_of_Comments():
 
     #Get the params
     def get_params(self, text):
-        self.first_param = '{rid: "R_SO_4_400162138", offset: "0", total: "true", limit: "20", csrf_token: ""}'
+        self.first_param = '{rid: "R_SO_4_' + self.songID + '", offset: "0", total: "true", limit: "20", csrf_token: ""}'
         self.params = self.aesEncrypt(self.first_param, self.fourth_param)
         self.params = self.aesEncrypt(self.params, text)
         return self.params
