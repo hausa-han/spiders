@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2447fcda-bf8d-4b01-ad4d-3e7c02a57331" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/lianjia/house2csv.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HAUST/haustAutoGetScore.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +36,7 @@
       <option name="presentableId" value="Default" />
       <updated>1658819978291</updated>
       <workItem from="1658819980615" duration="1008000" />
-      <workItem from="1658820989657" duration="677000" />
+      <workItem from="1658820989657" duration="1130000" />
     </task>
     <servers />
   </component>

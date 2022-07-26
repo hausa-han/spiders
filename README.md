@@ -4,6 +4,12 @@
 
 
 
+### 河南科技大学
+
+[河南科技大学学生自动查分(已过时)](https://github.com/hausa-han/spiders/blob/main/HAUST/haustAutoGetScore.py)
+
+
+
 ### 链家
 
 [爬取链家租房信息 并保存到csv](https://github.com/hausa-han/spiders/blob/main/lianjia/house2csv.py)
