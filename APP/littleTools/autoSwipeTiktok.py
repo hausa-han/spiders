@@ -4,6 +4,7 @@ import threading
 import uiautomator2 as u2
 import time, datetime
 from random import randint
+from ..accounts.secretAccounts import tiktokAccounts
 import os
 
 
@@ -119,7 +120,7 @@ if __name__ == "__main__":
     appName = "com.ss.android.ugc.aweme.lite"  # app package name: adb shell dumpsys window | grep mCurrentFocus
 
     # Accounts
-    tiktokAccounts = {'15112479424':'a12345687', '13598131990':'a123456798'}
+    tiktokAccounts = dict.copy(tiktokAccounts)
 
     # start
     while True:

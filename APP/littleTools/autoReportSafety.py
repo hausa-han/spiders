@@ -3,7 +3,9 @@ import threading
 
 import uiautomator2 as u2
 import time, datetime
-from random import randint
+from random import randintfrom
+from ..accounts.secretAccounts import iLoveKeDaAccounts
+
 import os
 
 
@@ -136,7 +138,7 @@ if __name__ == '__main__':
     fakeLocationAppName = "com.lerist.fakelocation"  # app package name: adb shell dumpsys window | grep mCurrentFocus
     iLoveKeDaAppName = "com.lantu.MobileCampus.haust"
 
-    accounts = {}
+    accounts = dict.copy(iLoveKeDaAccounts)
 
     screenShotStoragePath = 'reportSafetyResult'
 
