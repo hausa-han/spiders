@@ -162,5 +162,6 @@ if __name__ == '__main__':
                 phone.driver.app_stop_all()
             except Exception as e:
                 print('Account {} fail, try again after all.'.format(account))
+                phone.driver.app_stop_all()
                 continue
 
