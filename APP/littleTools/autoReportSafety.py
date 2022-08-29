@@ -3,8 +3,8 @@ import threading
 
 import uiautomator2 as u2
 import time, datetime
-from random import randintfrom
-from ..accounts.secretAccounts import iLoveKeDaAccounts
+from random import randint
+from APP.accounts.secretAccounts import iLoveKeDaAccounts
 
 import os
 

@@ -4,7 +4,7 @@ import threading
 import uiautomator2 as u2
 import time, datetime
 from random import randint
-from ..accounts.secretAccounts import tiktokAccounts
+from APP.accounts.secretAccounts import tiktokAccounts
 import os
 
 
