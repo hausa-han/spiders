@@ -136,6 +136,7 @@ if __name__ == '__main__':
     fakeLocationAppName = "com.lerist.fakelocation"  # app package name: adb shell dumpsys window | grep mCurrentFocus
     iLoveKeDaAppName = "com.lantu.MobileCampus.haust"
 
+    accounts = {}
 
     screenShotStoragePath = 'reportSafetyResult'
 
