@@ -12,4 +12,4 @@ def decode(s, charset='utf-8'):
 
 
 if __name__ == '__main__':
-    print(decode('CMsBEJZOGAAiAk9LKAEyJ9oMJBiUgKTK0tf5AiAuKAAwAzj2bkCUgKTK0tf5AkjQu4LDltn5AjoiMjAyMjA4MjgwMDAyNDAwMTAyMTEyMTkwMTQwMzg0NTAzMVDY/KmArjBYzf6pgK4waMTW5tHcAg=='))
+    print(decode('PGh0bWw+DQo8dGl0bGU+SGVyZSdzIGEgc2VjcmV0LiBDYW4geW91IGZpbmQgaXQ/PC90aXRsZT4NCjw/cGhwDQoNCmlmKGlzc2V0KCRfR0VUWydmaWxlJ10pKXsNCiAgICAkZmlsZSA9ICRfR0VUWydmaWxlJ107DQogICAgaW5jbHVkZSgkZmlsZSk7DQp9ZWxzZXsNCiAgICBoaWdobGlnaHRfZmlsZShfX0ZJTEVfXyk7DQp9DQo/Pg0KPC9odG1sPg0K'))

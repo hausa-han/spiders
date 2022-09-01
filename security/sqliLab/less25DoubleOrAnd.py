@@ -1,4 +1,4 @@
-# sqlmap/tamper/escapequotes.py
+# sqlmap/tamper/doubleOrAnd.py
 from lib.core.enums import PRIORITY
 
 
